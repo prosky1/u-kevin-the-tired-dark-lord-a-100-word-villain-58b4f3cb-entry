@@ -1,46 +1,56 @@
 // The Tired Dark Lord: A 100-Word Villain Monologue
-// Entry program for make.fun competition
-// u-kevin-the-tired-dark-lord-a-100-word-villain-58b4f3cb
+// make.fun bounty u-kevin-the-tired-dark-lord-a-100-word-villain-58b4f3cb
 //
-// Writes the monologue (exactly 100 words) to /output/entry.txt.
+// The entry program. It prints the chosen monologue (exactly 100 words,
+// 550 characters) and stores it at /output/entry.txt so the judge reads
+// exactly the text below, byte for byte.
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 
-const MONOLOGUE =
-  "You came all this way to stop me, and honestly, I respect the effort. " +
-  "I really do. But look at me. I have been monologuing since dawn, the " +
-  "lava moat needs refilling, and my minions unionized last Tuesday. World " +
-  "domination was supposed to come with a pension plan. Instead I got a " +
-  "castle with no heating and a prophecy that does not even mention dental. " +
-  "So take the sword. Take the throne. Take the cursed amulet — it itches " +
-  "anyway. I will be in the tower, napping. If the kingdom needs " +
-  "conquering, leave a message. Preferably after lunch. Preferably never.";
+const MONOLOGUE = `I did not conquer this kingdom. I bought it in a timeshare presentation, and the small print turned out to be a curse. Now I own the castle every third weekend, the dragon on bank holidays, and the peasants, lovely people, whenever the paperwork says so. The evil is mostly admin. I file the screams, I stamp the curses, I water the carnivorous plants on Tuesdays. You want the throne? It is yours for a weekend in February, non-refundable, bring your own minions. Just sign here. And here. The quill bites, but only a little. Only on the first page.`;
 
 const OUTPUT_PATH =
   process.argv[2] ?? process.env.OUTPUT_PATH ?? "/output/entry.txt";
 
-function wordCount(text: string): number {
-  return text.trim().split(/\s+/).length;
+const EXPECTED_WORDS = 100;
+const MIN_CHARS = 1;
+const MAX_CHARS = 600;
+
+function countWords(text: string): number {
+  return text.split(/\s+/).filter((w) => w.length > 0).length;
+}
+
+function assertCleanText(text: string): void {
+  // The judge counts the raw string: no leading/trailing whitespace and no
+  // doubled spaces, so a stray edit cannot silently change the word count.
+  if (text !== text.trim()) {
+    throw new Error("Monologue has leading or trailing whitespace.");
+  }
+  if (/\s{2,}/.test(text)) {
+    throw new Error("Monologue contains consecutive whitespace.");
+  }
 }
 
 function main(): void {
-  const words = wordCount(MONOLOGUE);
-  if (words !== 100) {
-    throw new Error(`Monologue must be 100 words, got ${words}.`);
+  assertCleanText(MONOLOGUE);
+  const words = countWords(MONOLOGUE);
+  if (words !== EXPECTED_WORDS) {
+    throw new Error(`Expected ${EXPECTED_WORDS} words, got ${words}.`);
   }
-  if (MONOLOGUE.length < 1 || MONOLOGUE.length > 600) {
-    throw new Error(`Monologue must be 1-600 characters, got ${MONOLOGUE.length}.`);
+  if (MONOLOGUE.length > MAX_CHARS || MONOLOGUE.length < MIN_CHARS) {
+    throw new Error(`Expected ${MIN_CHARS}-${MAX_CHARS} characters, got ${MONOLOGUE.length}.`);
   }
+
   mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
   writeFileSync(OUTPUT_PATH, MONOLOGUE, "utf8");
-  // Round-trip check: what landed on disk must be byte-identical to the
-  // monologue above, with no trailing newline added by the writer.
-  const written = readFileSync(OUTPUT_PATH, "utf8");
-  if (written !== MONOLOGUE) {
-    throw new Error("Round-trip mismatch: written entry differs from monologue.");
+
+  const onDisk = readFileSync(OUTPUT_PATH, "utf8");
+  if (onDisk !== MONOLOGUE) {
+    throw new Error("Entry on disk does not match the monologue exactly.");
   }
-  console.log(`Wrote ${words} words (${MONOLOGUE.length} chars) to ${OUTPUT_PATH}`);
+
+  console.log(`Wrote ${words} words, ${MONOLOGUE.length} chars -> ${OUTPUT_PATH}`);
 }
 
 main();

@@ -8,9 +8,9 @@ Entry for the [make.fun bounty "The Tired Dark Lord: A 100-Word Villain Monologu
 
 ## The monologue
 
-> You came all this way to stop me, and honestly, I respect the effort. I really do. But look at me. I have been monologuing since dawn, the lava moat needs refilling, and my minions unionized last Tuesday. World domination was supposed to come with a pension plan. Instead I got a castle with no heating and a prophecy that does not even mention dental. So take the sword. Take the throne. Take the cursed amulet — it itches anyway. I will be in the tower, napping. If the kingdom needs conquering, leave a message. Preferably after lunch. Preferably never.
+> I did not conquer this kingdom. I bought it in a timeshare presentation, and the small print turned out to be a curse. Now I own the castle every third weekend, the dragon on bank holidays, and the peasants, lovely people, whenever the paperwork says so. The evil is mostly admin. I file the screams, I stamp the curses, I water the carnivorous plants on Tuesdays. You want the throne? It is yours for a weekend in February, non-refundable, bring your own minions. Just sign here. And here. The quill bites, but only a little. Only on the first page.
 
-Exactly 100 words, 556 characters.
+Exactly 100 words, 550 characters.
 
 ## How it works
 
